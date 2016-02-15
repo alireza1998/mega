@@ -57,7 +57,7 @@ local function check_member_realm_add(cb_extra, success, result)
       end
       data[tostring(realms)][tostring(msg.to.id)] = msg.to.id
       save_data(_config.moderation.data, data)
-      return send_large_msg(receiver, 'Realm has been added!')
+      return send_large_msg(receiver, 'به لیست دسترسی ربات اضاف شد⛔️ :  Realm')
     end
   end
 end
@@ -89,7 +89,7 @@ function check_member_group(cb_extra, success, result)
       end
       data[tostring(groups)][tostring(msg.to.id)] = msg.to.id
       save_data(_config.moderation.data, data)
-      return send_large_msg(receiver, 'You have been promoted as the owner.')
+      return send_large_msg(receiver, 'شما به مقام ارشد ارتقاء پیدا کردید✅')
     end
   end
 end
@@ -156,7 +156,7 @@ local function check_member_realmrem(cb_extra, success, result)
       end
       data[tostring(realms)][tostring(msg.to.id)] = nil
       save_data(_config.moderation.data, data)
-      return send_large_msg(receiver, 'Realm has been removed!')
+      return send_large_msg(receiver, 'با موفقیت از دسترسی ربات خارج شد⛔️ :  Realm')
     end
   end
 end
@@ -784,7 +784,7 @@ local function set_group_photo(msg, success, result)
     send_large_msg(receiver, 'Photo saved!', ok_cb, false)
   else
     print('Error downloading: '..msg.id)
-    send_large_msg(receiver, 'Failed, please try again!', ok_cb, false)
+    send_large_msg(receiver, 'خطا!⛔️لطفا مجدد امتحان کنید', ok_cb, false)
   end
 end
 
@@ -792,14 +792,14 @@ local function promote(receiver, member_username, member_id)
   local data = load_data(_config.moderation.data)
   local group = string.gsub(receiver, 'chat#id', '')
   if not data[group] then
-    return send_large_msg(receiver, 'Group is not added.')
+    return send_large_msg(receiver, 'اضاف شده است⛔️ :  Group')
   end
   if data[group]['moderators'][tostring(member_id)] then
     return send_large_msg(receiver, member_username..' is already a moderator.')
   end
   data[group]['moderators'][tostring(member_id)] = member_username
   save_data(_config.moderation.data, data)
-  return send_large_msg(receiver, member_username..' has been promoted.')
+  return send_large_msg(receiver, member_username..' has been promoted✅')
 end
 
 local function promote_by_reply(extra, success, result)
@@ -820,14 +820,14 @@ local function demote(receiver, member_username, member_id)
   local data = load_data(_config.moderation.data)
   local group = string.gsub(receiver, 'chat#id', '')
   if not data[group] then
-    return send_large_msg(receiver, 'Group is not added.')
+    return send_large_msg(receiver, 'اضاف شده است⛔️ :  Group')
   end
   if not data[group]['moderators'][tostring(member_id)] then
-    return send_large_msg(receiver, member_username..' is not a moderator.')
+    return send_large_msg(receiver, member_username..' is not a moderator✅')
   end
   data[group]['moderators'][tostring(member_id)] = nil
   save_data(_config.moderation.data, data)
-  return send_large_msg(receiver, member_username..' has been demoted.')
+  return send_large_msg(receiver, member_username..' has been demoted⛔️')
 end
 
 local function demote_by_reply(extra, success, result)
@@ -1400,7 +1400,7 @@ local function run(msg, matches)
         if success == 0 then
            return send_large_msg(receiver, 'خطا!⛔️ ربات سازنده گروه نیست')
         end
-        send_large_msg(receiver, "Created a new link")
+        send_large_msg(receiver, "لینک جدید با موفقیت ساخته شد✅   ")
         data[tostring(msg.to.id)]['settings']['set_link'] = result
         save_data(_config.moderation.data, data)
       end
@@ -1633,8 +1633,8 @@ return {
   "^[#](modlist)$",
   "^[+](newlink)$",
   "^[#](link)$",
-  "^[+](kickinactive)$",
-  "^[+](kickinactive) (%d+)$",
+  "^[-](kickinactive)$",
+  "^[-](kickinactive) (%d+)$",
   "%[(photo)%]",
   "^!!tgservice (.+)$",
   "%[(audio)%]",
